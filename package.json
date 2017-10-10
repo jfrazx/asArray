@@ -1,0 +1,49 @@
+{
+  "name": "@jfrazx/asarray",
+  "version": "1.0.0",
+  "description": "Ensures returned value is always an Array",
+  "main": "index.js",
+  "scripts": {
+    "commit": "git-cz",
+    "compile": "tsc",
+    "coverage:check": "istanbul check-coverage --statements 95 --functions 100 --lines 100 --branches 100",
+    "coverage:report": "codecov",
+    "coverage:test": "istanbul cover _mocha -- -R spec spec",
+    "precommit": "npm run coverage:test && npm run coverage:check",
+    "prepush": "npm run coverage:test",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post",
+    "test": "mocha -R spec ./spec/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jfrazx/asArray.git"
+  },
+  "keywords": [
+    "array",
+    "arguments"
+  ],
+  "author": "jfrazx",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jfrazx/asArray/issues"
+  },
+  "homepage": "https://github.com/jfrazx/asArray#readme",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "codecov": "^2.3.0",
+    "commitizen": "^2.9.6",
+    "cz-conventional-changelog": "^2.0.0",
+    "husky": "^0.14.3",
+    "istanbul": "^0.4.5",
+    "mocha": "^4.0.0",
+    "semantic-release": "^8.0.3",
+    "tslint": "^5.7.0",
+    "typescript": "^2.5.3"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  },
+  "types": "index.d.ts"
+}

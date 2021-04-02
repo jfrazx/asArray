@@ -1,6 +1,6 @@
 {
   "name": "@jfrazx/asarray",
-  "version": "1.0.0",
+  "version": "0.0.0-development",
   "description": "Ensures returned value is always an Array",
   "main": "dist/index.js",
   "scripts": {

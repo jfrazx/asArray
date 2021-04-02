@@ -2,25 +2,34 @@
   "name": "@jfrazx/asarray",
   "version": "1.0.0",
   "description": "Ensures returned value is always an Array",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "commit": "git-cz",
-    "compile": "tsc",
-    "coverage:check": "istanbul check-coverage --statements 95 --functions 100 --lines 100 --branches 100",
-    "coverage:report": "codecov",
-    "coverage:test": "istanbul cover _mocha -- -R spec spec",
+    "prebuild": "rimraf dist",
+    "build": "tsc",
+    "prepublish": "npm run build",
+    "coverage:check": "nyc check-coverage",
+    "coverage:report": "nyc report --reporter=text-lcov > coverage.lcov",
+    "coverage:post": "codecov",
+    "precoverage:test": "rimraf coverage",
+    "coverage:test": "nyc mocha",
     "precommit": "npm run coverage:test && npm run coverage:check",
     "prepush": "npm run coverage:test",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post",
-    "test": "mocha -R spec ./spec/"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jfrazx/asArray.git"
+    "url": "https://github.com/jfrazx/asArray.git"
   },
   "keywords": [
     "array",
-    "arguments"
+    "arguments",
+    "convert",
+    "object",
+    "typed array",
+    "keys",
+    "typescript"
   ],
   "author": "jfrazx",
   "license": "MIT",
@@ -29,21 +38,42 @@
   },
   "homepage": "https://github.com/jfrazx/asArray#readme",
   "devDependencies": {
-    "chai": "^4.1.2",
-    "codecov": "^2.3.0",
-    "commitizen": "^2.9.6",
-    "cz-conventional-changelog": "^2.0.0",
-    "husky": "^0.14.3",
-    "istanbul": "^0.4.5",
-    "mocha": "^4.0.0",
-    "semantic-release": "^8.0.3",
-    "tslint": "^5.7.0",
-    "typescript": "^2.5.3"
+    "@istanbuljs/nyc-config-typescript": "^1.0.1",
+    "@semantic-release/commit-analyzer": "^8.0.1",
+    "@semantic-release/release-notes-generator": "^9.0.2",
+    "@types/chai": "^4.2.15",
+    "@types/mocha": "^8.2.2",
+    "chai": "^4.3.4",
+    "codecov": "^3.8.1",
+    "commitizen": "^4.2.3",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^7.23.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "husky": "^6.0.0",
+    "mocha": "^8.3.2",
+    "nyc": "^15.1.0",
+    "prettier": "^2.2.1",
+    "rimraf": "^3.0.2",
+    "semantic-release": "^17.4.2",
+    "source-map-support": "^0.5.19",
+    "travis-deploy-once": "^5.0.11",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.3"
   },
   "config": {
     "commitizen": {
       "path": "node_modules/cz-conventional-changelog"
     }
   },
-  "types": "index.d.ts"
+  "mocha": {
+    "recursive": false,
+    "spec": "test/*.spec.ts",
+    "reporter": "spec",
+    "require": [
+      "ts-node/register/transpile-only",
+      "source-map-support/register"
+    ]
+  }
 }

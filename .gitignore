@@ -5,7 +5,7 @@
 *.map
 *.d.ts
 
-typings/
 node_modules/
 coverage/
-!spec/**
+dist/
+.nyc_output/

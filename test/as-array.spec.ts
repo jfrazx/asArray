@@ -1,7 +1,5 @@
-'use strict';
-
-const asArray    = require('../index').asArray;
-const { expect } = require('chai');
+import { asArray } from '../src';
+import { expect } from 'chai';
 
 describe('asArray', () => {
   it('should return an array from a single value', () => {
@@ -21,7 +19,7 @@ describe('asArray', () => {
     expect(result).to.be.an('array');
     expect(result).to.have.lengthOf(5);
 
-    result.forEach(value => {
+    result.forEach((value) => {
       expect(value).to.be.a('string');
     });
   });
@@ -36,11 +34,11 @@ describe('asArray', () => {
   it('should create a matrix from array of numbers | number[]', () => {
     const values = [0, [1], 2, 3, 4, [5], 6, 7, [8], 9];
 
-    const result = values.map(asArray);
+    const result = values.map<number[]>(asArray);
 
     expect(result).to.be.an('array');
 
-    result.forEach(array => {
+    result.forEach((array) => {
       expect(array).to.be.an('array');
       expect(array).to.have.lengthOf(1);
       expect(array[0]).to.be.a('number');
@@ -56,7 +54,7 @@ describe('asArray', () => {
   });
 
   it('should take a single value and map the results', () => {
-    const result = asArray('5', value => parseInt(value, 10));
+    const result = asArray('5', (value) => parseInt(value, 10));
 
     expect(result).to.be.an('array');
     expect(result).to.have.lengthOf(1);
@@ -71,19 +69,49 @@ describe('asArray', () => {
     expect(result).to.be.an('array');
     expect(result).to.have.lengthOf(3);
 
-    result.forEach(value => {
+    result.forEach((value) => {
       expect(value).to.be.a('string');
     });
   });
 
   it('should return an array when passed arguments', () => {
-    function args(...rest) {
+    function args(..._rest: any[]) {
       const result = asArray(arguments);
 
       expect(result).to.be.an('array');
       expect(result).to.have.lengthOf(3);
 
-      result.forEach(value => {
+      result.forEach((value) => {
+        expect(value).to.be.a('number');
+      });
+    }
+
+    args(1, 2, 3);
+  });
+
+  it('should return an array when passed arguments and a starting value', () => {
+    function args(..._rest: any[]) {
+      const result = asArray<number>(arguments, 2);
+
+      expect(result).to.be.an('array');
+      expect(result).to.have.lengthOf(1);
+
+      result.forEach((value) => {
+        expect(value).to.be.a('number');
+      });
+    }
+
+    args(1, 2, 3);
+  });
+
+  it('should return an array when passed arguments and junk data', () => {
+    function args(..._rest: any[]) {
+      const result = asArray<number>(arguments, 'cat' as any);
+
+      expect(result).to.be.an('array');
+      expect(result).to.have.lengthOf(3);
+
+      result.forEach((value) => {
         expect(value).to.be.a('number');
       });
     }
@@ -99,7 +127,7 @@ describe('asArray', () => {
     expect(result).to.be.an('array');
     expect(result).to.have.lengthOf(4);
 
-    result.forEach(value => {
+    result.forEach((value) => {
       expect(value).to.be.an('array');
 
       const [k, v] = value;
@@ -111,7 +139,7 @@ describe('asArray', () => {
   it('should take an object and a callback, returning a single [value]', () => {
     const person = { name: 'Bart Simpson', age: 10 };
 
-    const result = asArray(person, object => object.name);
+    const result = asArray(person, (object) => object.name);
 
     expect(result).to.be.an('array');
     expect(result).to.have.lengthOf(1);

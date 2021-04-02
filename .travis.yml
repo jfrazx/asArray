@@ -1,24 +1,28 @@
 language: node_js
 cache:
   directories:
+    - ~/.npm
     - node_modules
 notifications:
   email: false
 node_js:
-  - '8'
-  - '7'
-  - '6'
-install:
-  - npm install
+  - '15'
+  - '14'
+  - '12'
+  - '10'
 before_script:
   - npm prune
-  - npm run compile
 script:
   - npm run coverage:test
   - npm run coverage:check
   - npm run coverage:report
-after_success:
-  - npm run semantic-release
+  - npm run build
+  - npm run coverage:post
+deploy:
+  provider: script
+  skip_cleanup: true
+  script:
+    - npx travis-deploy-once "npx semantic-release"
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
